@@ -5,10 +5,7 @@ import com.application.bookwebservice.model.service.LivroService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -24,7 +21,6 @@ public class LivroController {
         return "Olá mundo";
     }
 
-
     @GetMapping
     public ResponseEntity<List<Livro>> buscaTodosLivros(){
         List<Livro> livros = livroService.buscaTodos();
@@ -37,4 +33,15 @@ public class LivroController {
         return livro == null ? ResponseEntity.status(HttpStatus.NO_CONTENT).build() : ResponseEntity.status(HttpStatus.OK).body(livro);
     }
 
+    @PostMapping
+    public ResponseEntity<Livro> criaLivro(@RequestBody Livro livro){
+        Livro livroSalvo = livroService.criaLivro(livro);
+        return ResponseEntity.status(HttpStatus.CREATED).body(livroSalvo);
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity deletaLivro(@PathVariable Long id){
+        livroService.deletaLivro(id);
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+    }
 }
